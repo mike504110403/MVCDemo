@@ -1,0 +1,39 @@
+﻿@using MVCDemo.Models;
+@{
+    List<MemberState> memberstates = ViewBag.MemberStates;
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>會員編號</th>
+            <th>會員帳號</th>
+            <th>會員暱稱</th>
+            <th>會員等級</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (MemberState memberstate in memberstates)
+        {
+            <tr>
+                <th>@memberstate.Id</th>
+                <th>@memberstate.UserId</th>
+                <th>@memberstate.nickName</th>
+                <th>@memberstate.CardLevel</th>
+                <th>
+                    @Html.ActionLink("編輯", "EditMemberState", new { id = memberstate.Id })
+                    |
+                    @Html.ActionLink("刪除", "DeleteMember", new { id = memberstate.Id })
+                <th>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("加入會員", "CreateAccount")
+</p>
