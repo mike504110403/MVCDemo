@@ -1,6 +1,6 @@
-﻿@using MVCDemo.Models;
+﻿@model MVCDemo.Models.MemberState
+@using MVCDemo.Models
 @{
-    MemberState memberstate = ViewBag.memberState;
     Layout = "~/Views/Shared/_LayoutMember.cshtml";
 }
 <table class="table">
@@ -10,18 +10,22 @@
             <th>會員帳號</th>
             <th>會員暱稱</th>
             <th>會員等級</th>
+            <th>會員電話</th>
+            <th>會員信箱</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 
         <tr>
-            <th>@memberstate.Id</th>
-            <th>@memberstate.UserId</th>
-            <th>@memberstate.nickName</th>
-            <th>@memberstate.CardLevel</th>
+            <th>@Model.Id</th>
+            <th>@Model.UserId </ th >
+            <th>@Model.nickName </ th >
+            <th>@Model.CardLevel </ th >
+            <th>@Model.phoneNumber </ th >
+            <th>@Model.eMail </ th >
             <th>
-                @Html.ActionLink("編輯", "EditMemberState", new { id = memberstate.Id })
+                @Html.ActionLink("編輯", "EditMemberState", new { id = Model.Id })
             <th>
         </tr>
     </tbody>

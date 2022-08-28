@@ -28,24 +28,28 @@ namespace MVCDemo.Controllers
         [HttpPost]
         public ActionResult CreateAccount(MemberState memberState)
         {
-            dbManager dbmanager = new dbManager();
-            if (!dbmanager.IsUserIdExist(memberState.UserId)) // 如果該帳號不存在才能新增
+            if (ModelState.IsValid)
             {
-                try
+                dbManager dbmanager = new dbManager();
+                if (!dbmanager.IsUserIdExist(memberState.UserId)) // 如果該帳號不存在才能新增
                 {
-                    dbmanager.NewMember(memberState);
+                    try
+                    {
+                        dbmanager.NewMember(memberState);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
+                    return RedirectToAction("Login");
                 }
-                catch (Exception e)
+                else
                 {
-                    Console.WriteLine(e.ToString());
+                    ViewBag.Message = "此帳號已存在";
+                    return View();
                 }
-                return RedirectToAction("Login");
             }
-            else
-            {
-                ViewBag.Message = "此帳號已存在";
-                return View();
-            }
+            return View();
         }
 
         //---------------------修改帳號頁-----------------------

@@ -68,7 +68,12 @@ namespace MVCDemo.Models
                         Id = reader.GetInt32(reader.GetOrdinal("Id")),
                         nickName = reader.GetString(reader.GetOrdinal("nickName")),
                         UserId = reader.GetString(reader.GetOrdinal("UserId")),
-                        CardLevel = reader.GetString(reader.GetOrdinal("CardLevel"))
+                        CardLevel = reader.GetString(reader.GetOrdinal("CardLevel")),
+                        // 先檢查是否為空，空的會傳null，有值再傳值
+                        phoneNumber = reader.IsDBNull(reader.GetOrdinal("phoneNumber")) ? null
+                        : reader.GetString(reader.GetOrdinal("phoneNumber")),
+                        eMail = reader.IsDBNull(reader.GetOrdinal("eMail")) ? null
+                        : reader.GetString(reader.GetOrdinal("eMail"))
                     };
                 }
             }
@@ -100,7 +105,12 @@ namespace MVCDemo.Models
                         Id = reader.GetInt32(reader.GetOrdinal("Id")),
                         nickName = reader.GetString(reader.GetOrdinal("nickName")),
                         UserId = reader.GetString(reader.GetOrdinal("UserId")),
-                        CardLevel = reader.GetString(reader.GetOrdinal("CardLevel"))
+                        CardLevel = reader.GetString(reader.GetOrdinal("CardLevel")),
+                        // 先檢查是否為空，空的會傳null，有值再傳值
+                        phoneNumber = reader.IsDBNull(reader.GetOrdinal("phoneNumber")) ? null  
+                        : reader.GetString(reader.GetOrdinal("phoneNumber")),
+                        eMail = reader.IsDBNull(reader.GetOrdinal("eMail")) ? null
+                        : reader.GetString(reader.GetOrdinal("eMail"))
                     };
                 }
             }
@@ -193,10 +203,13 @@ namespace MVCDemo.Models
                 (ConfigurationManager.ConnectionStrings["MemberDB"].ConnectionString);
 
             SqlCommand sqlCommand = new SqlCommand(@"UPDATE tmember SET UserId = @UserId,
-                                    nickName = @nickName WHERE Id = @Id"); // update tmember // 使用sql paramter避免injection
+                nickName = @nickName, phoneNumber = @phoneNumber, eMail = @eMail
+                WHERE Id = @Id"); // update tmember // 使用sql paramter避免injection
             sqlCommand.Connection = sqlConnection;
             sqlCommand.Parameters.Add(new SqlParameter("@UserId", memberState.UserId));
             sqlCommand.Parameters.Add(new SqlParameter("@nickName", memberState.nickName));
+            sqlCommand.Parameters.Add(new SqlParameter("@phoneNumber", memberState.phoneNumber));
+            sqlCommand.Parameters.Add(new SqlParameter("@eMail", memberState.eMail));
             sqlCommand.Parameters.Add(new SqlParameter("@Id", memberState.Id));
 
             sqlConnection.Open(); //連線並開啟資料庫

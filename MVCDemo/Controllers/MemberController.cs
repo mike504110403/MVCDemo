@@ -8,11 +8,11 @@ using MVCDemo.Models;
 
 namespace MVCDemo.Controllers
 {
-    [Authorize]
     public class MemberController : Controller
     {
         //----------------------會員首頁------------------------
         // GET: Member
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -21,6 +21,7 @@ namespace MVCDemo.Controllers
 
         //---------------------會員登出-------------------------
         // GET: Member/Logout
+        [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut(); // 登出授權
@@ -29,16 +30,18 @@ namespace MVCDemo.Controllers
 
         //---------------------會員狀態頁------------------------
         // GET: Member/MemberState
+        [Authorize]
         public ActionResult MemberState()
         {
             string UserId = User.Identity.Name; // 取目前授權帳號
             dbManager dbManager = new dbManager(); // db連線物件
             MemberState memberState = dbManager.GetMemberStateByUserId(UserId); // 取用會員狀態方法
             ViewBag.memberState = memberState; // 將meberState記在viewbag
-            return View(ViewBag.memberState); // 跳轉至會員狀態頁
+            return View(memberState); // 跳轉至會員狀態頁
         }
 
         //---------------------修改帳號-----------------------
+        [Authorize]
         public ActionResult EditMemberState(int id)
         {
             dbManager dbmanager = new dbManager();
@@ -46,13 +49,24 @@ namespace MVCDemo.Controllers
             return View(memberState); // 傳給view顯示該筆資料
         }
         [HttpPost]
+        [Authorize]
         public ActionResult EditMemberState(MemberState memberState)
         {
-            dbManager dbManager = new dbManager();
-            dbManager.UpdateMember(memberState); // 修改該筆資料
-            return RedirectToAction("MemberState"); // 返回首頁
+            if (ModelState.IsValid)
+            {
+                dbManager dbManager = new dbManager();
+                try
+                {
+                    dbManager.UpdateMember(memberState); // 修改該筆資料
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                return RedirectToAction("MemberState"); // 返回會員狀態頁
+            }
+            return View();
         }
-
 
     }
 }
