@@ -33,6 +33,7 @@ namespace MVCDemo.Controllers
         [Authorize]
         public ActionResult MemberState()
         {
+            Console.WriteLine("YOYOOYOYOYOYOOY");
             string UserId = User.Identity.Name; // 取目前授權帳號
             dbManager dbManager = new dbManager(); // db連線物件
             MemberState memberState = dbManager.GetMemberStateByUserId(UserId); // 取用會員狀態方法
@@ -52,7 +53,11 @@ namespace MVCDemo.Controllers
         [Authorize]
         public ActionResult EditMemberState(MemberState memberState)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                return View(memberState);
+            }
+            else
             {
                 dbManager dbManager = new dbManager();
                 try
@@ -63,9 +68,8 @@ namespace MVCDemo.Controllers
                 {
                     Console.WriteLine(e.ToString());
                 }
-                return RedirectToAction("MemberState"); // 返回會員狀態頁
+                return RedirectToRoute("MemberState"); // 返回會員狀態頁
             }
-            return View();
         }
 
     }

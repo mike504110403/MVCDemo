@@ -168,12 +168,16 @@ namespace MVCDemo.Models
             SqlDataReader reader = sqlCommand.ExecuteReader();
             if (reader.HasRows)
             {
+                sqlConnection.Close();
                 return true;
             }
-            else { return false; }
-            sqlConnection.Close();
-
+            else 
+            { 
+                sqlConnection.Close(); 
+                return false; 
+            }
         }
+
         // 新增資料
         public void NewMember(MemberState memberState)
         {
@@ -202,19 +206,21 @@ namespace MVCDemo.Models
             SqlConnection sqlConnection = new SqlConnection // 從web.config取連線字串，將連線動作指向變數
                 (ConfigurationManager.ConnectionStrings["MemberDB"].ConnectionString);
 
-            SqlCommand sqlCommand = new SqlCommand(@"UPDATE tmember SET UserId = @UserId,
+            using (SqlCommand sqlCommand = new SqlCommand(@"UPDATE tmember SET UserId = @UserId,
                 nickName = @nickName, phoneNumber = @phoneNumber, eMail = @eMail
-                WHERE Id = @Id"); // update tmember // 使用sql paramter避免injection
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.Add(new SqlParameter("@UserId", memberState.UserId));
-            sqlCommand.Parameters.Add(new SqlParameter("@nickName", memberState.nickName));
-            sqlCommand.Parameters.Add(new SqlParameter("@phoneNumber", memberState.phoneNumber));
-            sqlCommand.Parameters.Add(new SqlParameter("@eMail", memberState.eMail));
-            sqlCommand.Parameters.Add(new SqlParameter("@Id", memberState.Id));
+                WHERE Id = @Id")) // update tmember // 使用sql paramter避免injection
+            {
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.Add(new SqlParameter("@UserId", memberState.UserId));
+                sqlCommand.Parameters.Add(new SqlParameter("@nickName", memberState.nickName));
+                sqlCommand.Parameters.Add(new SqlParameter("@phoneNumber", memberState.phoneNumber));
+                sqlCommand.Parameters.Add(new SqlParameter("@eMail", memberState.eMail));
+                sqlCommand.Parameters.Add(new SqlParameter("@Id", memberState.Id));
 
-            sqlConnection.Open(); //連線並開啟資料庫
-            sqlCommand.ExecuteNonQuery();
-            sqlConnection.Close();
+                sqlConnection.Open(); //連線並開啟資料庫
+                sqlCommand.ExecuteNonQuery();
+            }
+
         }
 
         // 刪除資料

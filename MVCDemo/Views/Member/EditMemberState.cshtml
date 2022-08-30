@@ -1,5 +1,4 @@
 ﻿@model MVCDemo.Models.MemberState
-@using MVCDemo.Models
 @{
     Layout = "~/Views/Shared/_LayoutMember.cshtml";
 }
@@ -18,14 +17,14 @@
         <label for="UserId" class="col-sm-2">會員帳號</label>
         <div class="col-sm-10">
             <input type="text" id="UserId" name="UserId" class="form-control" value="@Model.UserId" />
-            @*@Html.ValidationMessageFor(model => model.UserId)*@
+            @Html.ValidationMessageFor(model => model.UserId)
         </div>
     </div>
     <div class="form-group row">
         <label for="nickName" class="col-sm-2">會員暱稱</label>
         <div class="col-sm-10">
             <input type="text" id="nickName" name="nickName" class="form-control" value="@Model.nickName" />
-            @*@Html.ValidationMessageFor(model => model.nickName)*@
+            @Html.ValidationMessageFor(model => model.nickName)
         </div>
     </div>
     <div class="form-group row">
@@ -38,16 +37,16 @@
         <label for="phoneNumber" class="col-sm-2">會員電話</label>
         <div class="col-sm-10">
             <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" value="@Model.phoneNumber" />
-            @*@Html.ValidationMessageFor(model => model.phoneNumber)*@
+            @Html.ValidationMessageFor(model => model.phoneNumber)
         </div>
     </div>
     <div class="form-group row">
         <label for="eMail" class="col-sm-2">會員信箱</label>
         <div class="col-sm-10">
             <input type="text" id="eMail" name="eMail" class="form-control" value="@Model.eMail" />
-            @*@Html.ValidationMessageFor(model => model.eMail)*@
+            @Html.ValidationMessageFor(model => model.eMail)
         </div>
-
+    </div>
         <input class="btn btn-default" type="submit" value="儲存" />
 </form>
 
